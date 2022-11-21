@@ -1,0 +1,22 @@
+create trigger after_insert after insert on borrower for each row
+begin
+insert into lib_audit values(
+new.rno,new.name,new.doi,new.bname,new.status
+);
+end;
+
+
+create trigger after_delete after delete on borrower for each row
+begin
+insert into lib_audit values(
+old.rno,old.name,old.doi,old.bname,old.status
+);
+end;
+
+
+create trigger after_update after update on borrower for each row
+begin
+insert into lib_audit values(
+new.rno,new.name,new.doi,new.bname,new.status
+);
+end;

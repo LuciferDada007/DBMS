@@ -1,0 +1,36 @@
+Procedure:
+
+create procedure proc_grade(IN rno1 int,out grade varchar(20))
+begin
+declare m int;
+select marks into m from stud_marks where name=(select name from result where rno=rno1);
+
+if m<=1500 and m>=990 then
+select 'Distinction' into grade;
+update result set class='Distinction' where rno=rno1;
+
+elseif m<=989 and m>=900 then
+select 'First Class' into grade;
+update result set class='First Class' where rno=rno1;
+
+elseif m<=899 and m>=825 then
+select 'Higher Second Class' into grade;
+update result set class='Higher Second Class' where rno=rno1;
+
+else
+select '----' into grade;
+update result set class='----' where rno=rno1;
+
+end if;
+end;
+
+Function:
+
+create function func_grade(rno int)
+returns varchar(25)
+deterministic
+begin
+declare grade varchar(25);
+call proc_grade(rno,grade);
+return grade;
+end;

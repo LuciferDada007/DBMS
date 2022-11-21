@@ -1,0 +1,23 @@
+Create procedure P4(In Rno1 int(3),Bname1 varchar(30))
+begin
+Declare i_date date;
+Declare diff int;
+Declare fine_amt int;
+Declare status1 char(1);
+Declare exit handler for sqlexception select 'Table not Found';
+Select status into status1 from B where Rno=Rno1 and Bname=Bname1;
+If (status1 ='I') then
+Select DOI into i_date from B where Rno=Rno1 and Bname=Bname1;
+Select DATEDIFF(curdate(), i_date) into diff;
+If(diff>=15 and diff<=30)then
+Set fine_amt=diff*5;
+insert into fine values(rno1,curdate(),diff,fine_amt);
+elseif (diff>30) then
+set fine_amt=diff*50;
+insert into fine values(rno1,curdate(),diff,fine_amt);
+end if;
+update B set status='R' where Rno=Rno1 and Bname=Bname1;
+end if;
+select * from B;
+select * from fine;
+End;
