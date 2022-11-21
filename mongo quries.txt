@@ -1,0 +1,44 @@
+Q10
+1)
+db.student.insert({name : "Sham", class :"TE" , address :"Pune", age :21, fees :20000})
+db.student.insertMany( [ {name : "Summit", class :"TE" , address :"Pune", age :21, fees :20000},{name : "vijay", class :"TE" , address :"Pune", age :21, fees :20000} ] ) 
+2)
+db.student.find().pretty()
+3)
+db.student.update({name : "Summit"},{$set :{ age : 23 } } )
+4)
+db.student.remove({name :"Vijay"})
+
+Q11
+1)
+db.student.aggregate([{$match : {class : TE}}, {$count : "total no. of students in class TE"}])
+
+2)
+db.student.aggregate({$count : "Total no. of students " })
+
+db.student.aggregate( [ {$match : {$ class: {$in : ["TE", "SE"] } } },{ $count : "Total students"} ] )
+
+db.student.aggregate( [ { $group : { _id : "$class", Max_Age : { $max : " $age "} } } ] )
+
+3)
+db.student.aggregate( [ {$match : { age : {$gt :20 } } } ] )
+
+4)
+db.student.aggregate( [ {$sort : { age : 1 } } ] )
+
+5)
+db.student.createIndex( { name :1 } )
+db.student.getIndexes()
+
+Q12)
+
+db.collection_name.mapReduce(
+...function(){emit(this.age,this.marks) ; } ,
+...function(age,marks){returns Array.sum(marks)} ,
+...{ out :"Totalmarks" } )
+
+OR
+
+var map=function(){emit(this.age,this.marks)}
+var reduce=function(age,marks){returns Array.sum(marks)}
+db.collection_name.mapReduce(map,reduce,{out : "Totalmarks"})
